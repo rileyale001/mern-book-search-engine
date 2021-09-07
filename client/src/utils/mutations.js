@@ -21,3 +21,32 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ADD_USER = gql`
+  mutation addUser(
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    addUser(
+      userName: $userName
+      email: $email
+      password: $password
+    ) {
+      token
+      user {
+        _id
+        username
+        bookCount
+        email
+        saveBooks {
+            bookId
+            description
+            image
+            link
+            authors
+        }
+      }
+    }
+  }
+`;
