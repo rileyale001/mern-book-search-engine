@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/react-hooks';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
+  const [addUser, { error }] = useMutation(ADD_USER);
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
   // set state for form validation
@@ -21,22 +22,17 @@ const SignupForm = () => {
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    // }
 
     try {
-      const response = await createUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      const { data } = await addUser({
+        variables: {...userFormData}
+      });
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -102,6 +98,7 @@ const SignupForm = () => {
           variant='success'>
           Submit
         </Button>
+        {error && <div>Signup failed</div>}
       </Form>
     </>
   );
