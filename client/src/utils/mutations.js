@@ -44,6 +44,7 @@ export const ADD_USER = gql`
             description
             image
             link
+            title
             authors
         }
       }
@@ -58,6 +59,25 @@ export const SAVE_BOOK = gql`
         username
         saveBooks {
             bookId
+            description
+            image
+            link
+            title
+            authors
+        }
+      }
+    }
+`;
+export const REMOVE_BOOK = gql`
+  mutation removeBook($bookId: String!) {
+    removeBook(bookId: $bookId) {
+        _id
+        email
+        username
+        bookCount
+        saveBooks {
+            bookId
+            title
             description
             image
             link
